@@ -12,8 +12,12 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import { getSessionUser } from '@/lib/auth-store';
 
 export default function ResultsBroadsheetPage() {
+    const user = getSessionUser();
+    const isTeacher = user?.role === 'TEACHER';
+    const isAdminorOwner = user?.role === 'ADMIN' || user?.role === 'SCHOOL_OWNER';
   const [classes, setClasses] = useState<any[]>([]);
   const [subjects, setSubjects] = useState<any[]>([]);
   const [terms, setTerms] = useState<any[]>([]);
@@ -501,6 +505,27 @@ export default function ResultsBroadsheetPage() {
                   ))}
                 </tbody>
               </table>
+
+              {isAdminorOwner && (
+                <>
+                  <button
+                    onClick={handleGenerateBroadsheet}
+                    disabled={loading}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-sm transition"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Compute &amp; Publish Broadsheet
+                  </button>
+
+                  {!isTeacher ? (
+                    <div className="mt-4 p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm print:hidden">
+                      <strong>Academic Integrity Lock:</strong> Subject scores can only be entered or modified
+                      by the assigned subject teacher. Select a Term and Class above, then click{' '}
+                      <strong>Compute &amp; Publish Broadsheet</strong> to compile all teacher submissions.
+                    </div>
+                  ) : null}
+                </>
+              )}
             </div>
           </div>
         </div>
