@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import {
-  Award,
-  Printer,
-  Save,
-  Sparkles,
-  CheckCircle,
-  X,
-  ShieldCheck,
-} from 'lucide-react';
+import { Award, CheckCircle, Printer, Save, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { api } from '@/lib/api';
 import { getSessionUser } from '@/lib/auth-store';
 
@@ -352,6 +344,7 @@ export default function ResultsBroadsheetPage() {
         </div>
       </div>
 
+
       {/* Ranked Class Broadsheet */}
       {broadsheet.length > 0 && (
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden print:hidden">
@@ -533,3 +526,4 @@ export default function ResultsBroadsheetPage() {
     </div>
   );
 }
+
