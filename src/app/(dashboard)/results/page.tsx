@@ -34,35 +34,30 @@ export default function ResultsBroadsheetPage() {
   const [statusMsg, setStatusMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     async function init() {
       try {
         const [{ data: overview }, { data: allUsers }] = await Promise.all([
           api.get('/academics/overview'),
           api.get('/users?role=STUDENT'),
         ]);
-        const assignments = overview.teacherAssignments || [];
+
+        const loadedClasses = overview.classes || [];
+        const loadedSubjects = overview.subjects || [];
         const allTerms = (overview.sessions || []).flatMap((s: any) =>
           (s.terms || []).map((t: any) => ({ ...t, sessionName: s.name })),
         );
 
-        setClasses(overview.classes || []);
-        setSubjects(overview.subjects || []);
+        setClasses(loadedClasses);
+        setSubjects(loadedSubjects);
         setTerms(allTerms);
-        setTeacherAssignments(assignments);
         setStudents(allUsers || []);
 
-        if (assignments.length) {
-          setSelectedClass(assignments[0].classRoomId);
-          setSelectedSubject(assignments[0].subjectId);
-        } else {
-          setSelectedClass(overview.classes?.[0]?.id || '');
-          setSelectedSubject(overview.subjects?.[0]?.id || '');
-        }
-        setSelectedTerm(allTerms[0]?.id || '');
+        if (loadedClasses.length > 0) setSelectedClass(loadedClasses[0].id);
+        if (loadedSubjects.length > 0) setSelectedSubject(loadedSubjects[0].id);
+        if (allTerms.length > 0) setSelectedTerm(allTerms[0].id);
       } catch (err) {
-        console.error('Failed to load score-entry data:', err);
-        setStatusMsg('Unable to load classes or students for score entry.');
+        console.error('Failed to initialize results page:', err);
       }
     }
     init();
