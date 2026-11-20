@@ -16,6 +16,8 @@ import {
   KeyRound,
   Menu,
   X,
+  Sparkles,
+  Clock,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { clearSession, getSessionUser, SessionUser } from '@/lib/auth-store';
@@ -126,6 +128,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       icon: Wallet,
       roles: ['SCHOOL_OWNER', 'ADMIN', 'BURSAR'],
     },
+
+        {
+      label: 'AI CBT Practice Lab',
+      href: '/cbt',
+      icon: Sparkles, // Import Sparkles from 'lucide-react'
+      roles: ['SCHOOL_OWNER', 'ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+    },
+
+        {
+      label: 'Smart Timetable',
+      href: '/timetable',
+      icon: Clock, // Import Clock from 'lucide-react'
+      roles: ['SCHOOL_OWNER', 'ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+    },
+
+
   ].filter((item) => item.roles.includes(user.role));
 
   return (
