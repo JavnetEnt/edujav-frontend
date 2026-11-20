@@ -34,42 +34,30 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [pwdMsg, setPwdMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [savingPwd, setSavingPwd] = useState(false);
 
-  useEffect(() => {
-    const session = getSessionUser();
-    if (!session) {
-      router.push('/login');
-      return;
-    }
-    setUser(session);
+useEffect(() => {
+  const session = getSessionUser();
+  if (!session) {
+    router.push('/login');
+    return;
+  }
+  setUser(session);
 
-    // Protect admin-only routes from direct URL access
- // Protect admin-only routes from direct URL access
- if (
-   (session.role === 'PARENT' || session.role === 'STUDENT') &&
-   !['/portal', '/cbt', '/timetable'].includes(pathname)
- ) {
-   router.push('/portal');
- } else if (
-   session.role === 'TEACHER' &&
-   !['/attendance', '/results', '/cbt', '/timetable'].includes(pathname)
- ) {
-   router.push('/attendance');
- }
+  const parentStudentAllowed = ['/portal', '/cbt', '/timetable'];
+  const teacherAllowed = ['/attendance', '/results', '/cbt', '/timetable'];
 
+  if (
+    (session.role === 'PARENT' || session.role === 'STUDENT') &&
+    !parentStudentAllowed.includes(pathname)
+  ) {
+    router.replace('/portal');
+  } else if (
+    session.role === 'TEACHER' &&
+    !teacherAllowed.includes(pathname)
+  ) {
+    router.replace('/attendance');
+  }
+}, [pathname, router]);
 
-    // Protect admin-only routes from direct URL access by Parents/Students/Teachers
-    if (
-      (session.role === 'PARENT' || session.role === 'STUDENT') &&
-      pathname !== '/portal'
-    ) {
-      router.push('/portal');
-    } else if (
-      session.role === 'TEACHER' &&
-      !['/attendance', '/results'].includes(pathname)
-    ) {
-      router.push('/attendance');
-    }
-  }, [pathname, router]);
 
   function handleLogout() {
     clearSession();
