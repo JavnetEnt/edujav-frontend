@@ -43,17 +43,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setUser(session);
 
     // Protect admin-only routes from direct URL access
-if (
-  (session.role === 'PARENT' || session.role === 'STUDENT') &&
-  !['/portal', '/cbt', '/timetable'].includes(pathname)
-) {
-  router.push('/portal');
-} else if (
-  session.role === 'TEACHER' &&
-  !['/attendance', '/results', '/cbt', '/timetable'].includes(pathname)
-) {
-  router.push('/attendance');
-}
+ // Protect admin-only routes from direct URL access
+ if (
+   (session.role === 'PARENT' || session.role === 'STUDENT') &&
+   !['/portal', '/cbt', '/timetable'].includes(pathname)
+ ) {
+   router.push('/portal');
+ } else if (
+   session.role === 'TEACHER' &&
+   !['/attendance', '/results', '/cbt', '/timetable'].includes(pathname)
+ ) {
+   router.push('/attendance');
+ }
+
 
 
     // Protect admin-only routes from direct URL access by Parents/Students/Teachers
