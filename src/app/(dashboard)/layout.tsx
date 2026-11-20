@@ -57,7 +57,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  }
 
 
-
     // Protect admin-only routes from direct URL access by Parents/Students/Teachers
     if (
       (session.role === 'PARENT' || session.role === 'STUDENT') &&
