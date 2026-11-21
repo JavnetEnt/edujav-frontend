@@ -49,7 +49,7 @@ if (data.user.role === 'PARENT' || data.user.role === 'STUDENT') {
             <GraduationCap className="w-7 h-7" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">EduPulse Cloud</h1>
+            <h1 className="text-2xl font-bold text-slate-900">EduJav Cloud</h1>
             <p className="text-sm text-slate-500">Multi-School Operating System</p>
           </div>
         </div>
