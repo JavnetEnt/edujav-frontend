@@ -65,7 +65,7 @@ export default function OnboardSchoolPage() {
               <div className="p-2.5 bg-white/10 rounded-xl">
                 <GraduationCap className="w-6 h-6 text-blue-300" />
               </div>
-              <span className="font-bold text-lg">EduPulse Cloud</span>
+              <span className="font-bold text-lg">EduJav Cloud</span>
             </div>
 
             <h1 className="text-2xl font-extrabold leading-snug">
