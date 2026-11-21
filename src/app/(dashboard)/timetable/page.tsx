@@ -85,6 +85,28 @@ export default function SmartTimetablePage() {
     }
   }
 
+  const handleDeleteTimetable = async (deleteAllForTerm = false) => {
+    if (!selectedTerm) return;
+    const confirmMsg = deleteAllForTerm
+      ? 'Delete the entire timetable for all classes in this term?'
+      : 'Delete the timetable for this selected class?';
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      const params = new URLSearchParams({ termId: selectedTerm });
+      if (!deleteAllForTerm && selectedClass) {
+        params.append('classRoomId', selectedClass);
+      }
+
+      const { data } = await api.delete(`/academics/timetable?${params.toString()}`);
+      setBanner(data.message || 'Timetable deleted');
+      if (selectedClass) await fetchTimetable(selectedTerm, selectedClass);
+    } catch (err: any) {
+      setBanner(err.response?.data?.message || 'Failed to delete timetable');
+    }
+  };
+
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       {/* Header */}
@@ -105,6 +127,28 @@ export default function SmartTimetablePage() {
         >
           <Printer className="w-4 h-4 text-blue-600" /> Print Timetable
         </button>
+
+        {(user?.role === 'SCHOOL_OWNER' || user?.role === 'ADMIN') && (
+  <div className="flex items-center gap-2">
+    {selectedClass && (
+      <button
+        type="button"
+        onClick={() => handleDeleteTimetable(false)}
+        className="px-4 py-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 text-sm font-medium hover:bg-rose-100"
+      >
+        Delete Class Timetable
+      </button>
+    )}
+    <button
+      type="button"
+      onClick={() => handleDeleteTimetable(true)}
+      className="px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-medium hover:bg-rose-700"
+    >
+      Clear Term Timetable
+    </button>
+  </div>
+)}
+
       </div>
 
       {banner && (
